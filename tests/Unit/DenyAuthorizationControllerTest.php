@@ -2,7 +2,9 @@
 
 namespace Laravel\Passport\Tests\Unit;
 
+use Exception;
 use Illuminate\Http\Request;
+use Laravel\Passport\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\DenyAuthorizationController;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
@@ -19,7 +21,7 @@ class DenyAuthorizationControllerTest extends TestCase
 
     public function test_authorization_can_be_denied()
     {
-        $this->expectException('Laravel\Passport\Exceptions\OAuthServerException');
+        $this->expectException(OAuthServerException::class);
 
         $server = m::mock(AuthorizationServer::class);
         $controller = new DenyAuthorizationController($server);
@@ -53,7 +55,7 @@ class DenyAuthorizationControllerTest extends TestCase
 
     public function test_auth_request_should_exist()
     {
-        $this->expectException('Exception');
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Authorization request was not present in the session.');
 
         $server = m::mock(AuthorizationServer::class);

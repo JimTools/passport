@@ -237,7 +237,7 @@ class AuthorizationControllerTest extends TestCase
 
     public function test_authorization_denied_if_request_has_prompt_equals_to_none()
     {
-        $this->expectException('Laravel\Passport\Exceptions\OAuthServerException');
+        $this->expectException(OAuthServerException::class);
 
         Passport::tokensCan([
             'scope-1' => 'description',
@@ -257,7 +257,7 @@ class AuthorizationControllerTest extends TestCase
             ->with($authRequest, m::type(ResponseInterface::class))
             ->once()
             ->andReturnUsing(function () {
-                throw new \League\OAuth2\Server\Exception\OAuthServerException('', 0, '');
+                throw new OAuthServerException('', 0, '');
             });
 
         $request = m::mock(Request::class);
@@ -312,7 +312,7 @@ class AuthorizationControllerTest extends TestCase
             $controller->authorize(
                 m::mock(ServerRequestInterface::class), $request, $clients
             );
-        } catch (\Laravel\Passport\Exceptions\OAuthServerException $e) {
+        } catch (OAuthServerException $e) {
             $this->assertStringStartsWith(
                 'http://localhost?state=state&error=access_denied&error_description=',
                 $e->getResponse()->headers->get('location')

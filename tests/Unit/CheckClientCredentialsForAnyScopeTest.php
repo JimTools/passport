@@ -4,6 +4,7 @@ namespace Laravel\Passport\Tests\Unit;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\Exceptions\AuthenticationException;
+use Laravel\Passport\Exceptions\MissingScopeException;
 use Laravel\Passport\Http\Middleware\CheckClientCredentialsForAnyScope;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
@@ -85,7 +86,7 @@ class CheckClientCredentialsForAnyScopeTest extends TestCase
 
     public function test_exception_is_thrown_if_token_does_not_have_required_scope()
     {
-        $this->expectException('Laravel\Passport\Exceptions\MissingScopeException');
+        $this->expectException(MissingScopeException::class);
 
         $resourceServer = m::mock(ResourceServer::class);
         $resourceServer->shouldReceive('validateAuthenticatedRequest')->andReturn($psr = m::mock(ServerRequestInterface::class));
